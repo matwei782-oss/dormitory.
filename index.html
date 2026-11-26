@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Общежитие БГУИР — Студенческий городок</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --primary-bg: #eff6ff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --border: #e2e8f0;
+      --radius: 16px;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--primary-light);
+      text-decoration: none;
+    }
+
+    /* === Шапка === */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo span {
+      font-size: 1.6rem;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 4px;
+      list-style: none;
+    }
+
+    nav a {
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--primary-bg);
+      color: var(--primary);
+    }
+
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 8px;
+    }
+
+    .burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* === Hero === */
+    .hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+      color: #fff;
+      padding: 80px 24px 72px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 640px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .hero-badges span {
+      background: rgba(255, 255, 255, 0.18);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      backdrop-filter: blur(4px);
+    }
+
+    /* === Секции === */
+    section {
+      padding: 72px 24px;
+    }
+
+    section:nth-child(even) {
+      background: var(--white);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .section-subtitle {
+      color: var(--text-light);
+      margin-bottom: 40px;
+      max-width: 680px;
+    }
+
+    /* === Карточки === */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-3px);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card p, .card li {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .card ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .card ul li {
+      padding: 5px 0 5px 22px;
+      position: relative;
+    }
+
+    .card ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--primary-light);
+      font-weight: 700;
+    }
+
+    /* === Фотогалерея === */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .gallery-item {
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #e2e8f0;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px dashed #cbd5e1;
+    }
+
+    /* === Шаги === */
+    .steps {
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .step {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      background: var(--primary-bg);
+      padding: 20px 24px;
+      border-radius: var(--radius);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* === Таблица оплаты === */
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+    }
+
+    .price-table th, .price-table td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-table th {
+      background: var(--primary-bg);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .price-table td:last-child {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* === Контакты === */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .contact-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .contact-item .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-bottom: 4px;
+    }
+
+    .contact-item .value {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .contact-item .value a {
+      color: var(--primary);
+    }
+
+    .map-wrapper {
+      margin-top: 32px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .map-wrapper iframe {
+      width: 100%;
+      height: 340px;
+      border: 0;
+      display: block;
+    }
+
+    /* === Футер === */
+    footer {
+      background: var(--primary);
+      color: rgba(255, 255, 255, 0.8);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* === Адаптив === */
+    @media (max-width: 820px) {
+      nav ul {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        flex-direction: column;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      .burger {
+        display: flex;
+      }
+
+      .hero {
+        padding: 56px 20px 48px;
+      }
+
+      section {
+        padding: 48px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header>
+    <div class="header-inner">
+      <div class="logo"><span>🏠</span> Общежитие БГУИР</div>
+      <nav>
+        <ul id="navList">
+          <li><a href="#about">О общежитии</a></li>
+          <li><a href="#checkin">Заселение</a></li>
+          <li><a href="#rules">Правила</a></li>
+          <li><a href="#payment">Оплата</a></li>
+          <li><a href="#council">Студсовет</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+      </nav>
+      <button class="burger" id="burgerBtn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Студенческий городок БГУИР</h1>
+    <p>Пять комфортабельных общежитий на более чем 4000 мест. Всё для учёбы, отдыха и жизни.</p>
+    <div class="hero-badges">
+      <span>📶 Wi-Fi</span>
+      <span>🧺 Прачечная</span>
+      <span>🏋️ Тренажёрный зал</span>
+      <span>🍽️ Столовая</span>
+    </div>
+  </section>
+
+  <!-- О общежитии -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">О общежитии</h2>
+      <p class="section-subtitle">В студенческом городке БГУИР — пять общежитий. Студенты проживают в комнатах по 2, 3 и 4 человека. Во всех общежитиях есть стиральные машины, а в №1, №2 и №4 — тренажёрные залы и теннисные комнаты.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>🏢 Коридорный тип</h3>
+          <p>Комнаты на 2–3 человека, кухни, умывальники и санузлы — на этаже. Самый доступный вариант.</p>
+        </div>
+        <div class="card">
+          <h3>🚪 Блочный тип</h3>
+          <p>Комнаты объединены в блоки. В блоке — санузел и умывальник, на этаже — общая кухня и душевая.</p>
+        </div>
+        <div class="card">
+          <h3>🏠 Квартирный тип</h3>
+          <p>Общежития №3, №4, №5: в каждом блоке две жилые комнаты, душ, туалет и кухня. Условия, приближенные к домашним.</p>
+        </div>
+      </div>
+
+      <div class="gallery">
+        <div class="gallery-item">📸 Фото комнаты</div>
+        <div class="gallery-item">📸 Фото кухни</div>
+        <div class="gallery-item">📸 Фото санузла</div>
+        <div class="gallery-item">📸 Фото тренажёрного зала</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Заселение -->
+  <section id="checkin">
+    <div class="container">
+      <h2 class="section-title">Заселение и документы</h2>
+      <p class="section-subtitle">Пошаговая инструкция для первокурсников и старших курсов.</p>
+
+      <div class="cards" style="margin-bottom: 32px;">
+        <div class="card">
+          <h3>🎓 Первокурсники</h3>
+          <p><strong>24–26 августа 2026</strong>, с 9:00 до 17:00, актовый зал университета (ул. П. Бровки, 4).</p>
+          <p style="margin-top: 8px;">График по факультетам:</p>
+          <ul>
+            <li>24.08 — инженерно-экономический, ФКП</li>
+            <li>25.08 — ФИТУ, ФРЭ</li>
+            <li>26.08 — ФКСиС, ФИБ</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>📚 Старшие курсы</h3>
+          <p><strong>27, 28 и 31 августа 2026</strong>.</p>
+          <p style="margin-top: 8px;">Оформление документов — каб. 105 общежития №1 (ул. Я. Коласа, 28).</p>
+          <p>При себе иметь 2 фотографии, паспорт и справку для заселения (срок действия — 5 дней).</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom: 16px;">Необходимые документы</h3>
+      <div class="steps">
+        <div class="step">
+          <div>
+            <strong>Паспорт + копия</strong>
+            <p>Оригинал и копия паспорта (стр. 25, 31–33).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Фотографии 3×4</strong>
+            <p>2–3 штуки. На обороте подписать: ФИО, факультет, № общежития, № комнаты.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Справка о составе семьи</strong>
+            <p>Справка с места жительства о занимаемой жилой площади и составе семьи.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Медицинская справка</strong>
+            <p>Отметка о флюорографии, справка об отсутствии педикулёза и кожных заболеваний (срок действия — 3 дня).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div>
+            <strong>Квитанция об оплате госпошлины</strong>
+            <p>Оплатить заранее.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Правила -->
+  <section id="rules">
+    <div class="container">
+      <h2 class="section-title">Правила внутреннего распорядка</h2>
+      <p class="section-subtitle">Режим работы, запрещённые приборы и техника безопасности.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>🕒 Пропускной режим</h3>
+          <p>Вход в общежитие открыт <strong>с 6:00 до 23:00</strong>. При входе необходимо предъявить пропуск установленной формы.</p>
+        </div>
+        <div class="card">
+          <h3>👥 Гости</h3>
+          <p>Гости могут находиться в общежитии <strong>с 10:00 до 21:00</strong> (воскресенье и праздничные дни).</p>
+        </div>
+        <div class="card">
+          <h3>🚫 Запрещённые электроприборы</h3>
+          <ul>
+            <li>Электрочайники, кипятильники</li>
+            <li>Электрообогреватели</li>
+            <li>Электроплиты, печи СВЧ</li>
+            <li>Удлинители без заземления, тройники</li>
+            <li>Паяльники и другие приборы без маркировки</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔥 Техника безопасности</h3>
+          <ul>
+            <li>Не пользоваться открытым огнём</li>
+            <li>Не загромождать коридоры и выходы</li>
+            <li>Не отключать пожарные извещатели</li>
+            <li>Соблюдать чистоту на кухне и в блоке</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Оплата -->
+  <section id="payment">
+    <div class="container">
+      <h2 class="section-title">Оплата и реквизиты</h2>
+      <p class="section-subtitle">Стоимость проживания зависит от размера базовой величины.</p>
+
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>Общежитие</th>
+            <th>Тип</th>
+            <th>Стоимость в месяц</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>№1, №2</td>
+            <td>Блочное / коридорное</td>
+            <td>0,8 базовой величины</td>
+          </tr>
+          <tr>
+            <td>№3, №4, №5</td>
+            <td>Квартирное</td>
+            <td>1,2 базовой величины</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cards" style="margin-top: 24px;">
+        <div class="card">
+          <h3>💳 Оплата через ЕРИП</h3>
+          <p>Система «Расчёт» (ЕРИП) → г. Минск → Образование и развитие → Высшее образование → БГУИР → «Общежития» → ввести номер студенческого билета или лицевой счёт.</p>
+        </div>
+        <div class="card">
+          <h3>📅 Сроки внесения платежей</h3>
+          <p>Студенты, обучающиеся на платной основе, и студенты, потерявшие право на стипендию, вносят оплату <strong>до 25-го числа каждого месяца</strong>.</p>
+          <p style="margin-top: 8px;">У бюджетников сумма вычитается из стипендии после письменного заявления.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Студсовет и досуг -->
+  <section id="council">
+    <div class="container">
+      <h2 class="section-title">Студенческий совет и досуг</h2>
+      <p class="section-subtitle">Старосты этажей, мероприятия, кружки и секции.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>👋 Старосты этажей</h3>
+          <p>Контакты старост этажей размещены на информационных стендах в каждом общежитии. Староста этажа входит в состав Студенческого совета общежития.</p>
+        </div>
+        <div class="card">
+          <h3>🎉 Мероприятия</h3>
+          <ul>
+            <li>Вечера настольных игр</li>
+            <li>Вечера дедуктивных игр</li>
+            <li>Вечер интересного кино</li>
+            <li>Фотоконкурс «Минск глазами студентов»</li>
+            <li>Выставка творческих работ «Многогранность таланта»</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🎭 Кружки и секции</h3>
+          <p>42 коллектива художественной самодеятельности: духовой оркестр, вокальные и танцевальные студии, интеллектуальные клубы «Эрудит», «Что? Где? Когда?».</p>
+          <p style="margin-top: 8px;">Спортивные секции и тренажёрные залы в общежитиях №1, №2, №4.</p>
+        </div>
+        <div class="card">
+          <h3>📰 Новости студгородка</h3>
+          <p>Следите за анонсами на информационных стендах и в официальных группах студенческого городка БГУИР.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section id="contacts">
+    <div class="container">
+      <h2 class="section-title">Контакты и расположение</h2>
+      <p class="section-subtitle">Адреса, телефоны и интерактивная карта проезда.</p>
+
+      <div class="contact-grid">
+        <div class="contact-item">
+          <div class="label">Общежитие №1</div>
+          <div class="value">ул. Я. Коласа, 28</div>
+          <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-light);">
+            Вахта: +375 17 293-31-95, +375 17 293-21-42<br>
+            Комендант: Высоцкая М. М., каб. 108
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Общежитие №2</div>
+          <div class="value">ул. Л. Беды, 4</div>
+          <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-light);">
+            Вахта: +375 17 331-38-27, +375 17 293-22-43
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Общежитие №3</div>
+          <div class="value">ул. Л. Беды, 2б</div>
+          <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-light);">
+            Вахта: +375 17 290-99-27
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Общежитие №4</div>
+          <div class="value">пр. Дзержинского, 95</div>
+          <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-light);">
+            Вахта: +375 17 350-43-53<br>
+            Комендант: Каминская В. П., тел. +375 17 392-99-24
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Общежитие №5</div>
+          <div class="value">ул. Семашко, 35а</div>
+        </div>
+        <div class="contact-item">
+          <div class="label">Студенческий городок</div>
+          <div class="value">Начальник: Медушевский И. А.</div>
+          <div style="margin-top: 8px; font-size: 0.9rem; color: var(--text-light);">
+            Тел.: +375 17 293-21-32, +375 17 292-86-91
+          </div>
+        </div>
+      </div>
+
+      <div class="map-wrapper">
+        <iframe
+          src="https://yandex.by/map-widget/v1/?um=constructor%3A1b5f0f5e5c5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e&amp;source=constructor"
+          loading="lazy"
+          title="Карта проезда к общежитию №1"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Футер -->
+  <footer>
+    <p>© 2026 Студенческий городок БГУИР. Все права защищены.</p>
+    <p style="margin-top: 8px;">Информация актуальна на август 2026 года.</p>
+  </footer>
+
+  <script>
+    // Мобильное меню
+    const burger = document.getElementById('burgerBtn');
+    const navList = document.getElementById('navList');
+
+    burger.addEventListener('click', () => {
+      navList.classList.toggle('open');
+    });
+
+    // Закрыть меню при клике на ссылку
+    navList.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navList.classList.remove('open');
+      });
+    });
+
+    // Плавная прокрутка
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+            </html>
